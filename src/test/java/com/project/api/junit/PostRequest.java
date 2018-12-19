@@ -1,0 +1,65 @@
+package com.project.api.junit;
+
+import com.project.api.model.CustomerPojo;
+import io.restassured.http.ContentType;
+import org.junit.Test;
+
+import java.util.ArrayList;
+
+import static io.restassured.RestAssured.given;
+
+public class PostRequest {
+
+    @Test
+    public void postJsonPlaceholder(){
+
+        ArrayList<String> addresses = new ArrayList<String>();
+        addresses.add("Union St 21");
+        addresses.add("Baker Ave 32");
+
+        CustomerPojo customer = new CustomerPojo();
+        customer.setFirstName("Alex");
+        customer.setLastName("Kozlov");
+        customer.setPhone("1123456789");
+        customer.setAddresses(addresses);
+
+        given()
+                .contentType(ContentType.JSON)
+                .when()
+                .body(customer)
+                .post("https://jsonplaceholder.typicode.com/posts")
+                .then()
+                .statusCode(201)
+                .log()
+                .all();
+
+    }
+    @Test
+    public void postJsonPlaceholderLog(){
+
+        ArrayList<String> addresses = new ArrayList<String>();
+        addresses.add("Union St 21");
+        addresses.add("Baker Ave 32");
+
+        CustomerPojo customer = new CustomerPojo();
+        customer.setFirstName("Alex");
+        customer.setLastName("Kozlov");
+        customer.setPhone("1123456789");
+        customer.setAddresses(addresses);
+
+        given()
+
+                .header("Content-Type", "application/json")
+                .header("Alex","Test")
+                .log()
+                .headers()
+                .when()
+                .body(customer)
+                .post("https://jsonplaceholder.typicode.com/posts")
+                .then()
+                .statusCode(201)
+                .log()
+                .all();
+
+    }
+}
